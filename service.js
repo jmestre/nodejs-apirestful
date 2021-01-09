@@ -9,5 +9,6 @@ exports.createToken = function(user){
 		exp: moment().add(14, "days").unix()
 	};
 
-	return jsw.encode(pauload, config.TOKEN_SECRET);
+
+	return jwt.encode(payload, config.TOKEN_SECRET);
 };

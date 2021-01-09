@@ -1,16 +1,23 @@
 var express = require("express"),
-	app = express(),
-	bodyParser = require("body-parser"),
-	methodOverride = require("method-override"),
-	cors = require("cors"),
-	middleware = require("./middleware"),
-	mongoose = require("mongoose");
+app = express(),
+bodyParser = require("body-parser"),
+methodOverride = require("method-override"),
+cors = require("cors"),
+middleware = require("./middleware"),
+mongoose = require("mongoose");
 
 
-mongoose.connect("mongodb://localhost/recaudoexpress", function(err, res){
-	if(err) throw err;
-	console.log("Conectado a la BD");
-});
+mongoose.connect("mongodb://localhost/recaudoexpress", 
+	{ 
+		useNewUrlParser: true, 
+		useUnifiedTopology: true,
+		useCreateIndex: true
+	},
+	function(err, res){
+		if(err) throw err;
+		console.log("Conectado a la BD");
+	}
+);
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
@@ -27,17 +34,16 @@ var authCtrl = require('./controllers/auth');
 
 var router = express.Router();
 router.get('/', function(req, res){
-	res.send("Salioooo");
+	return res.status(200)
+			.json({
+				mensaje: "El servidor funciona correctamente"
+			});
 });
 
-router.post('auth/singup', authCtrl.emailSignup);
-router.post('auth/login', authCtrl.emailLogin);
+router.post('/auth/singup', authCtrl.emailSignup);
+router.post('/auth/login', authCtrl.emailLogin);
 
 router.get('/private', middleware.ensureAuthenticated);
-
-
-app.use(router);
-
 
 var usuarios = express.Router();
 
@@ -47,8 +53,8 @@ usuarios.route('/usuarios')
 usuarios.route('/usuarios/:email')
 	.get(UsuarioCtrl.findByEmail);
 
+app.use('/', router);
 app.use('/api', usuarios);
-
 
 app.listen(3000, function(){
 	console.log("Corriendo en el puerto 3000");
