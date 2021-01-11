@@ -1,6 +1,6 @@
 Proyecto basico para iniciar un api restful
 
-Endpoints:
+Endpoints:<br>
 /<br>
 /auth/singup<br>
 /auth/generarTotp<br>
