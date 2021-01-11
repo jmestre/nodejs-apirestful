@@ -41,7 +41,9 @@ router.get('/', function(req, res){
 });
 
 router.post('/auth/singup', authCtrl.emailSignup);
-router.post('/auth/login', authCtrl.emailLogin);
+//router.post('/auth/login', authCtrl.emailLogin);
+router.post('/auth/generarTotp', authCtrl.generarTotp);
+router.post('/auth/validarTotp', authCtrl.validarTotp);
 
 router.get('/private', middleware.ensureAuthenticated);
 
